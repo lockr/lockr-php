@@ -1,0 +1,29 @@
+{
+    "name": "lockr/lockr-client",
+    "description": "Client for use with Lockr off-site key management service.",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Tynor Fujimoto",
+            "email": "tynor@lockr.io"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3.3",
+        "guzzlehttp/psr7": "^1.4.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Lockr\\": "src/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.3.5"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lockr\\Tests\\": "tests/"
+        }
+    }
+}
