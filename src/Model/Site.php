@@ -35,7 +35,7 @@ class Site
     /**
      * @returns string
      */
-    public function getlabel()
+    public function getLabel()
     {
         return $this->attrs['label'];
     }
