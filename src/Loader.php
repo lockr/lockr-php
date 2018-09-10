@@ -16,6 +16,7 @@ class Loader implements LoaderInterface
     /** @var array $modelMap */
     private $modelMap = [
         'site' => Model\Site::class,
+        'client-token' => Model\ClientToken::class,
     ];
 
     /**
