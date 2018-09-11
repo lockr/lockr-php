@@ -72,6 +72,7 @@ class Loader implements LoaderInterface
         $uri = "/{$this->routeMap[$data['type']]}/{$id}";
         $req = new Psr7\Request('GET', $uri);
         $resp = $this->httpClient->send($req);
+        $status = $resp->getStatusCode();
         if ($status >= 500) {
             throw new Exception('server error');
         } elseif ($status >= 400) {
@@ -95,6 +96,7 @@ class Loader implements LoaderInterface
         $uri = $links['related'];
         $req = new Psr7\Request('GET', $uri);
         $resp = $this->httpClient->send($req);
+        $status = $resp->getStatusCode();
         if ($status >= 500) {
             throw new Exception('server error');
         } elseif ($status >= 400) {
