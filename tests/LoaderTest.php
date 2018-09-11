@@ -46,7 +46,7 @@ class LoaderTest extends TestCase
                 'label' => 'Test Label',
             ],
         ];
-        $site = $loader->create('sites', $data);
+        $site = $loader->create($data);
         $this->assertInstanceOf(Model\Site::class, $site);
         $this->assertSame('aaa', $site->getId());
         $this->assertSame('Test Label', $site->getLabel());

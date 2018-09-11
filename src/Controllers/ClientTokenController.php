@@ -46,7 +46,7 @@ class ClientTokenController
                 ],
             ],
         ];
-        return $this->loader->create('client-tokens', $data);
+        return $this->loader->create($data);
     }
 }
 

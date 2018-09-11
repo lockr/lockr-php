@@ -35,7 +35,7 @@ class SiteController
                 'label' => $params['label'],
             ],
         ];
-        return $this->loader->create('sites', $data);
+        return $this->loader->create($data);
     }
 }
 

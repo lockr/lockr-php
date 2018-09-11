@@ -33,7 +33,7 @@ class SiteControllerTest extends TestCase
         ]);
         $loader = $this->createMock(LoaderInterface::class);
         $loader->method('create')
-            ->with('sites', $data)
+            ->with($data)
             ->willReturn($site);
 
         $controller = new SiteController($loader);

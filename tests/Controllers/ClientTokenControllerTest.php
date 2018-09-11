@@ -47,7 +47,7 @@ class ClientTokenControllerTest extends TestCase
         ]);
         $loader = $this->createMock(LoaderInterface::class);
         $loader->method('create')
-            ->with('client-tokens', $data)
+            ->with($data)
             ->willReturn($client_token);
 
         $controller = new ClientTokenController($loader);

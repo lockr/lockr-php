@@ -46,7 +46,7 @@ class ClientController
                 ],
             ],
         ];
-        return $this->loader->create('clients', $data);
+        return $this->loader->create($data);
     }
 }
 

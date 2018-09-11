@@ -18,9 +18,16 @@ class Loader implements LoaderInterface
 
     /** @var array $modelMap */
     private $modelMap = [
-        'site' => Model\Site::class,
-        'client-token' => Model\ClientToken::class,
         'client' => Model\Client::class,
+        'client-token' => Model\ClientToken::class,
+        'site' => Model\Site::class,
+    ];
+
+    /** @var array $routeMap */
+    private $routeMap = [
+        'client' => 'clients',
+        'client-token' => 'client-tokens',
+        'site' => 'sites',
     ];
 
     /**
@@ -34,9 +41,9 @@ class Loader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function create($collection, array $data)
+    public function create(array $data)
     {
-        $uri = "/{$collection}";
+        $uri = "/{$this->routeMap[$data['type']]}";
         $headers = [
             'content-type' => ['application/api+json'],
         ];
