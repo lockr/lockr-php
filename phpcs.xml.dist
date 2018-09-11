@@ -3,7 +3,7 @@
   <description>The coding standard for lockr.</description>
 
   <file>src</file>
-  <file>tests</file>o
+  <file>tests</file>
 
   <arg name="basepath" value="."/>
   <arg name="bootstrap" value="./vendor/autoload.php"/>
