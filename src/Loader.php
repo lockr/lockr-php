@@ -5,7 +5,10 @@ use Exception;
 
 use GuzzleHttp;
 use GuzzleHttp\Psr7;
+use Psr\Http\Message\ResponseInterface;
 
+use Lockr\Exception\LockrClientException;
+use Lockr\Exception\LockrServerException;
 use Lockr\Model;
 
 class Loader implements LoaderInterface
@@ -50,12 +53,7 @@ class Loader implements LoaderInterface
         $body = json_encode(['data' => $data]);
         $req = new Psr7\Request('POST', $uri, $headers, $body);
         $resp = $this->httpClient->send($req);
-        $status = $resp->getStatusCode();
-        if ($status >= 500) {
-            throw new Exception('server error');
-        } elseif ($status >= 400) {
-            throw new Exception('client error');
-        }
+        $this->checkErrors($resp);
         $body = json_decode((string) $resp->getBody(), true);
         return $this->loadModel($body['data']);
     }
@@ -72,12 +70,7 @@ class Loader implements LoaderInterface
         $uri = "/{$this->routeMap[$data['type']]}/{$id}";
         $req = new Psr7\Request('GET', $uri);
         $resp = $this->httpClient->send($req);
-        $status = $resp->getStatusCode();
-        if ($status >= 500) {
-            throw new Exception('server error');
-        } elseif ($status >= 400) {
-            throw new Exception('client error');
-        }
+        $this->checkErrors($resp);
         $body = json_decode((string) $resp->getBody(), true);
         return $this->loadModel($body['data']);
     }
@@ -96,12 +89,7 @@ class Loader implements LoaderInterface
         $uri = $links['related'];
         $req = new Psr7\Request('GET', $uri);
         $resp = $this->httpClient->send($req);
-        $status = $resp->getStatusCode();
-        if ($status >= 500) {
-            throw new Exception('server error');
-        } elseif ($status >= 400) {
-            throw new Exception('client error');
-        }
+        $this->checkErrors($resp);
         $body = json_decode((string) $resp->getBody(), true);
         return $this->loadModel($body['data']);
     }
@@ -118,6 +106,30 @@ class Loader implements LoaderInterface
         $model = new $cls($data);
         $this->cache["{$type}:{$data['id']}"] = $model;
         return $model;
+    }
+
+    /**
+     * @param ResponseInterface
+     */
+    private function checkErrors(ResponseInterface $resp)
+    {
+        $status = $resp->getStatusCode();
+        if ($status >= 400) {
+            $errors = [];
+            if ($body = json_decode((string) $resp->getBody(), true) &&
+                isset($body['errors'])
+            ) {
+                foreach ($body['errors'] as $error) {
+                    $errors[] = new ApiError($error);
+                }
+            }
+            if ($status >= 500) {
+                $e = new LockrServerException($errors);
+            } else {
+                $e = new LockrClientException($errors);
+            }
+            throw $e;
+        }
     }
 }
 
