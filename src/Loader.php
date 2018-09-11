@@ -82,6 +82,29 @@ class Loader implements LoaderInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function loadRelated(ModelInterface $model, $name)
+    {
+        $rel = $model->getRelationship($name);
+        if (isset($rel['data'])) {
+            $data = $rel['data'];
+            return $this->load($data['type'], $data['id']);
+        }
+        $links = $rel['links'];
+        $uri = $links['related'];
+        $req = new Psr7\Request('GET', $uri);
+        $resp = $this->httpClient->send($req);
+        if ($status >= 500) {
+            throw new Exception('server error');
+        } elseif ($status >= 400) {
+            throw new Exception('client error');
+        }
+        $body = json_decode((string) $resp->getBody(), true);
+        return $this->loadModel($body['data']);
+    }
+
+    /**
      * @param array $data
      *
      * @returns ModelInterface
