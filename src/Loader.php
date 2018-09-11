@@ -17,6 +17,7 @@ class Loader implements LoaderInterface
     private $modelMap = [
         'site' => Model\Site::class,
         'client-token' => Model\ClientToken::class,
+        'client' => Model\Client::class,
     ];
 
     /**
@@ -34,7 +35,7 @@ class Loader implements LoaderInterface
     {
         $uri = "/{$collection}";
         $headers = [
-            'content-type' => 'application/api+json',
+            'content-type' => ['application/api+json'],
         ];
         $body = json_encode(['data' => $data]);
         $req = new Psr7\Request('POST', $uri, $headers, $body);
