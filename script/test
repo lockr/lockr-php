@@ -4,7 +4,7 @@ set -euo pipefail
 unset CDPATH
 
 main() {
-    "$(proj_dir)/vendor/bin/phpunit" "$@"
+    (cd "$(proj_dir)" && ./vendor/bin/phpunit "$@")
 }
 
 proj_dir() {
