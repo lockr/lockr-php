@@ -61,6 +61,27 @@ class Loader implements LoaderInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function load($type, $id)
+    {
+        $key = "{$type}:{$id}";
+        if (isset($this->cache[$key])) {
+            return $this->cache[$key];
+        }
+        $uri = "/{$this->routeMap[$data['type']]}/{$id}";
+        $req = new Psr7\Request('GET', $uri);
+        $resp = $this->httpClient->send($req);
+        if ($status >= 500) {
+            throw new Exception('server error');
+        } else if ($status >= 400) {
+            throw new Exception('client error');
+        }
+        $body = json_decode((string) $resp->getBody(), true);
+        return $this->loadModel($body['data']);
+    }
+
+    /**
      * @param array $data
      *
      * @returns ModelInterface
