@@ -13,6 +13,9 @@ class Loader implements LoaderInterface
     /** @var GuzzleHttp\ClientInterface $httpClient */
     private $httpClient;
 
+    /** @var array $cache */
+    private $cache = [];
+
     /** @var array $modelMap */
     private $modelMap = [
         'site' => Model\Site::class,
@@ -47,9 +50,21 @@ class Loader implements LoaderInterface
             throw new Exception('client error');
         }
         $body = json_decode((string) $resp->getBody(), true);
-        $data = $body['data'];
-        $cls = $this->modelMap[$data['type']];
-        return new $cls($data);
+        return $this->loadModel($body['data']);
+    }
+
+    /**
+     * @param array $data
+     *
+     * @returns ModelInterface
+     */
+    private function loadModel(array $data)
+    {
+        $type = $data['type'];
+        $cls = $this->modelMap[$type];
+        $model = new $cls($data);
+        $this->cache["{$type}:{$data['id']}"] = $model;
+        return $model;
     }
 }
 
