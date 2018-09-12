@@ -24,6 +24,8 @@ class Loader implements LoaderInterface
         'cert' => Model\Cert::class,
         'client' => Model\Client::class,
         'client-token' => Model\ClientToken::class,
+        'secret' => Model\Secret::class,
+        'secret-value' => Model\SecretValue::class,
         'site' => Model\Site::class,
     ];
 
@@ -32,6 +34,8 @@ class Loader implements LoaderInterface
         'cert' => 'certs',
         'client' => 'clients',
         'client-token' => 'client-tokens',
+        'secret' => 'secrets',
+        'secret-value' => 'secret-values',
         'site' => 'sites',
     ];
 
