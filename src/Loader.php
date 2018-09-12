@@ -21,6 +21,7 @@ class Loader implements LoaderInterface
 
     /** @var array $modelMap */
     private $modelMap = [
+        'cert' => Model\Cert::class,
         'client' => Model\Client::class,
         'client-token' => Model\ClientToken::class,
         'site' => Model\Site::class,
@@ -28,6 +29,7 @@ class Loader implements LoaderInterface
 
     /** @var array $routeMap */
     private $routeMap = [
+        'cert' => 'certs',
         'client' => 'clients',
         'client-token' => 'client-tokens',
         'site' => 'sites',
