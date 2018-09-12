@@ -67,7 +67,7 @@ class Loader implements LoaderInterface
         if (isset($this->cache[$key])) {
             return $this->cache[$key];
         }
-        $uri = "/{$this->routeMap[$data['type']]}/{$id}";
+        $uri = "/{$this->routeMap[$type]}/{$id}";
         $req = new Psr7\Request('GET', $uri);
         $resp = $this->httpClient->send($req);
         $this->checkErrors($resp);

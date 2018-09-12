@@ -51,6 +51,35 @@ class LoaderTest extends TestCase
         $this->assertSame('aaa', $site->getId());
         $this->assertSame('Test Label', $site->getLabel());
     }
+
+    public function testLoadCache()
+    {
+        $now = new DateTime();
+        $now_fmt = $now->format(DateTime::RFC3339);
+        $mock = new MockHandler([
+            new Psr7\Response(
+                200,
+                ['content-type' => 'application/api+json'],
+                json_encode([
+                    'data' => [
+                        'type' => 'site',
+                        'id' => 'aaa',
+                        'attributes' => [
+                            'created' => $now_fmt,
+                            'modified' => $now_fmt,
+                            'label' => 'Test Label',
+                        ],
+                    ],
+                ])
+            ),
+        ]);
+        $handler = GuzzleHttp\HandlerStack::create($mock);
+        $client = new GuzzleHttp\Client(['handler' => $handler]);
+        $loader = new Loader($client);
+        $site = $loader->load('site', 'aaa');
+        $cached_site = $loader->load('site', 'aaa');
+        $this->assertSame($site, $cached_site);
+    }
 }
 
 // ex: ts=4 sts=4 sw=4 et:
