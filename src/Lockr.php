@@ -15,9 +15,17 @@ class Lockr
     private $loader;
 
     /**
+     * @param LoaderInterface $loader
+     */
+    public function __construct(LoaderInterface $loader)
+    {
+        $this->loader = $loader;
+    }
+
+    /**
      * @param SettingsInterface $settings
      */
-    public function __construct(SettingsInterface $settings)
+    public static function create(SettingsInterface $settings)
     {
         $ua = 'php/' . phpversion() . ' LockrClient/' . self::VERSION;
         $handler = GuzzleHttp\HandlerStack::create();
@@ -37,8 +45,8 @@ class Lockr
         ];
         $options = array_replace($base_options, $settings->getOptions());
         $client = new GuzzleHttp\Client($options);
-
-        $this->loader = new Loader($client);
+        $loader = new Loader($client);
+        return new static($loader);
     }
 
     /**
