@@ -55,7 +55,7 @@ class Loader implements LoaderInterface
         $resp = $this->httpClient->send($req);
         $this->checkErrors($resp);
         $body = json_decode((string) $resp->getBody(), true);
-        return $this->loadModel($body['data']);
+        return $this->loadBody($body);
     }
 
     /**
@@ -72,7 +72,7 @@ class Loader implements LoaderInterface
         $resp = $this->httpClient->send($req);
         $this->checkErrors($resp);
         $body = json_decode((string) $resp->getBody(), true);
-        return $this->loadModel($body['data']);
+        return $this->loadBody($body);
     }
 
     /**
@@ -91,6 +91,24 @@ class Loader implements LoaderInterface
         $resp = $this->httpClient->send($req);
         $this->checkErrors($resp);
         $body = json_decode((string) $resp->getBody(), true);
+        return $this->loadBody($body);
+    }
+
+    /**
+     * Loads the primary data model, and caches included models.
+     *
+     * @param array $body
+     *
+     * @returns ModelInterface
+     */
+    private function loadBody(array $body)
+    {
+        if (isset($body['included'])) {
+            foreach ($body['included'] as $data) {
+                $this->loadModel($data);
+            }
+        }
+
         return $this->loadModel($body['data']);
     }
 
