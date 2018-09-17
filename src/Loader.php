@@ -48,6 +48,32 @@ class Loader implements LoaderInterface
     }
 
     /**
+     * @param SettingsInterface $settings
+     */
+    public static function createFromSettings(SettingsInterface $settings)
+    {
+        $ua = 'php/' . phpversion() . ' LockrClient/' . self::VERSION;
+        $handler = GuzzleHttp\HandlerStack::create();
+        $handler->push(MiddlewareFactory::retry());
+        $base_options = [
+            'base_uri' => 'https://{$settings->getHostname()}',
+            'handler' => $handler,
+            'connect_timeout' => 2.0,
+            'expect' => false,
+            'headers' => [
+                'accept' => ['application/api+json'],
+                'user-agent' => [$ua],
+            ],
+            'http_errors' => false,
+            'read_timeout' => 3.0,
+            'timeout' => 5.0,
+        ];
+        $options = array_replace($base_options, $settings->getOptions());
+        $client = new GuzzleHttp\Client($options);
+        return new static($client);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function create(array $data)

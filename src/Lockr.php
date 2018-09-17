@@ -23,33 +23,6 @@ class Lockr
     }
 
     /**
-     * @param SettingsInterface $settings
-     */
-    public static function create(SettingsInterface $settings)
-    {
-        $ua = 'php/' . phpversion() . ' LockrClient/' . self::VERSION;
-        $handler = GuzzleHttp\HandlerStack::create();
-        $handler->push(MiddlewareFactory::retry());
-        $base_options = [
-            'base_uri' => 'https://{$settings->getHostname()}',
-            'handler' => $handler,
-            'connect_timeout' => 2.0,
-            'expect' => false,
-            'headers' => [
-                'accept' => ['application/api+json'],
-                'user-agent' => [$ua],
-            ],
-            'http_errors' => false,
-            'read_timeout' => 3.0,
-            'timeout' => 5.0,
-        ];
-        $options = array_replace($base_options, $settings->getOptions());
-        $client = new GuzzleHttp\Client($options);
-        $loader = new Loader($client);
-        return new static($loader);
-    }
-
-    /**
      * @returns Controllers\ClientController
      */
     public function clients()
