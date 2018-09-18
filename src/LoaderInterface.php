@@ -24,6 +24,15 @@ interface LoaderInterface
     public function load($type, $id, array $include = null);
 
     /**
+     * Loads a collection.
+     *
+     * @param string $type
+     *
+     * @returns ModelInterface[]
+     */
+    public function loadCollection($type);
+
+    /**
      * Loads a related model.
      *
      * @param ModelInterface $model

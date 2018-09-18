@@ -111,6 +111,23 @@ class Loader implements LoaderInterface
     }
 
     /**
+     * Loads a collection.
+     *
+     * @param string $type
+     *
+     * @returns ModelInterface[]
+     */
+    public function loadCollection($type)
+    {
+        $uri = "/{$this->routeMap[$type]}";
+        $req = new Psr7\Request('GET', $uri);
+        $resp = $this->httpClient->send($req);
+        $this->checkErrors($resp);
+        $body = json_decode((string) $resp->getBody(), true);
+        return array_map([$this, 'loadModel'], $body['data']);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function loadRelated(ModelInterface $model, $name)
