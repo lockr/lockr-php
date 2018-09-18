@@ -34,7 +34,7 @@ class LockrAes128CtrSha256KeyWrapper implements KeyWrapperInterface
      */
     public static function reencrypt($plaintext, $wrapping_key)
     {
-        $parts = self::decode($encoded);
+        $parts = self::decode($wrapping_key);
         if (!$parts) {
             return false;
         }
@@ -47,7 +47,7 @@ class LockrAes128CtrSha256KeyWrapper implements KeyWrapperInterface
      */
     public static function decrypt($ciphertext, $wrapping_key)
     {
-        $parts = self::decode($encoded);
+        $parts = self::decode($wrapping_key);
         if (!$parts) {
             return false;
         }
@@ -131,7 +131,7 @@ class LockrAes128CtrSha256KeyWrapper implements KeyWrapperInterface
 
     private static function decode($wrapping_key)
     {
-        $parts = explode('$', $encoded, 4);
+        $parts = explode('$', $wrapping_key, 4);
         if (!$parts || count($parts) !== 4) {
             return false;
         }
