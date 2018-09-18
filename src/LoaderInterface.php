@@ -17,10 +17,11 @@ interface LoaderInterface
      *
      * @param string $type
      * @param string $id
+     * @param array $include
      *
      * @returns ModelInterface
      */
-    public function load($type, $id);
+    public function load($type, $id, array $include = null);
 
     /**
      * Loads a related model.

@@ -93,13 +93,16 @@ class Loader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function load($type, $id)
+    public function load($type, $id, array $include = null)
     {
         $key = "{$type}:{$id}";
         if (isset($this->cache[$key])) {
             return $this->cache[$key];
         }
         $uri = "/{$this->routeMap[$type]}/{$id}";
+        if ($include) {
+            $uri .= '?include=' . urlencode(implode(',', $include));
+        }
         $req = new Psr7\Request('GET', $uri);
         $resp = $this->httpClient->send($req);
         $this->checkErrors($resp);
