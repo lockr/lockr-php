@@ -3,11 +3,13 @@ namespace Lockr\KeyWrapper;
 
 class LockrAes128CtrSha256RawKeyWrapper implements KeyWrapperInterface
 {
-    const PREFIX = 'raw-aes-128-ctr-sha256';
+    const PREFIX = '$1$';
 
     const METHOD = 'aes-128-ctr';
 
+    const HMAC_KEY_LEN = 32;
     const KEY_LEN = 16;
+    const IV_LEN = 16;
 
     /**
      * {@inheritdoc}
@@ -23,9 +25,8 @@ class LockrAes128CtrSha256RawKeyWrapper implements KeyWrapperInterface
     public static function encrypt($plaintext)
     {
         $key = openssl_random_pseudo_bytes(self::KEY_LEN);
-        $iv_len = openssl_cipher_iv_length(self::METHOD);
-        $iv = openssl_random_pseudo_bytes($iv_len);
-        $hmac_key = openssl_random_pseudo_bytes(32);
+        $iv = openssl_random_pseudo_bytes(self::IV_LEN);
+        $hmac_key = openssl_random_pseudo_bytes(self::HMAC_KEY_LEN);
         return self::doEncrypt($plaintext, $key, $iv, $hmac_key);
     }
 
@@ -38,8 +39,7 @@ class LockrAes128CtrSha256RawKeyWrapper implements KeyWrapperInterface
         $wrapping_key = base64_decode($wrapping_key);
         $key = substr($wrapping_key, 0, self::KEY_LEN);
         $hmac_key = substr($wrapping_key, self::KEY_LEN);
-        $iv_len = openssl_cipher_iv_length(self::METHOD);
-        $iv = openssl_random_pseudo_bytes($iv_len);
+        $iv = openssl_random_pseudo_bytes(self::IV_LEN);
         return self::doEncrypt($plaintext, $key, $iv, $hmac_key);
     }
 
@@ -53,15 +53,14 @@ class LockrAes128CtrSha256RawKeyWrapper implements KeyWrapperInterface
         $key = substr($wrapping_key, 0, self::KEY_LEN);
         $hmac_key = substr($wrapping_key, self::KEY_LEN);
 
-        $cipherdata = substr($ciphertext, 0, -32);
-        $hmac = substr($ciphertext, -32);
+        $cipherdata = substr($ciphertext, 0, -self::HMAC_KEY_LEN);
+        $hmac = substr($ciphertext, -self::HMAC_KEY_LEN);
         if (!self::hashEquals($hmac, self::hmac($cipherdata, $hmac_key))) {
             return false;
         }
 
-        $iv_len = openssl_cipher_iv_length(self::METHOD);
-        $iv = substr($cipherdata, 0, $iv_len);
-        $ciphertext = substr($cipherdata, $iv_len);
+        $iv = substr($cipherdata, 0, self::IV_LEN);
+        $ciphertext = substr($cipherdata, self::IV_LEN);
         $plaintext = openssl_decrypt(
             $ciphertext,
             self::METHOD,
