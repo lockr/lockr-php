@@ -22,7 +22,7 @@ class ClientTokenController
     /**
      * @param array $params
      *
-     * @returns ClientToken;
+     * @return ClientToken;
      */
     public function create(array $params)
     {

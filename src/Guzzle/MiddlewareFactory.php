@@ -10,7 +10,7 @@ use Psr\Http\Message\ResponseInterface;
 class MiddlewareFactory
 {
     /**
-     * @returns callable
+     * @return callable
      */
     public static function retry()
     {
@@ -21,7 +21,7 @@ class MiddlewareFactory
     }
 
     /**
-     * @returns callable
+     * @return callable
      */
     private static function retryDelay()
     {
@@ -31,7 +31,7 @@ class MiddlewareFactory
     }
 
     /**
-     * @returns callable
+     * @return callable
      */
     private static function retryDecider()
     {

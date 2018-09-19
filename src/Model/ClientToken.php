@@ -6,7 +6,7 @@ use DateTime;
 class ClientToken extends ModelBase
 {
     /**
-     * @returns DateTime
+     * @return DateTime
      */
     public function getCreated()
     {
@@ -15,7 +15,7 @@ class ClientToken extends ModelBase
     }
 
     /**
-     * @returns string
+     * @return string
      */
     public function getEnv()
     {
@@ -23,7 +23,7 @@ class ClientToken extends ModelBase
     }
 
     /**
-     * @returns array
+     * @return array
      */
     public function getSite()
     {

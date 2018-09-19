@@ -14,7 +14,7 @@ class LockrApiException extends Exception
     }
 
     /**
-     * @returns array
+     * @return array
      */
     public function getErrors()
     {

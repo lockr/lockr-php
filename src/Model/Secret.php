@@ -6,7 +6,7 @@ use DateTime;
 class Secret extends ModelBase
 {
     /**
-     * @returns DateTime
+     * @return DateTime
      */
     public function getCreated()
     {
@@ -15,7 +15,7 @@ class Secret extends ModelBase
     }
 
     /**
-     * @returns DateTime
+     * @return DateTime
      */
     public function getModified()
     {
@@ -24,7 +24,7 @@ class Secret extends ModelBase
     }
 
     /**
-     * @returns string
+     * @return string
      */
     public function getName()
     {
@@ -32,7 +32,7 @@ class Secret extends ModelBase
     }
 
     /**
-     * @returns string
+     * @return string
      */
     public function getLabel()
     {
@@ -40,7 +40,7 @@ class Secret extends ModelBase
     }
 
     /**
-     * @returns string
+     * @return string
      */
     public function getPolicy()
     {
@@ -48,7 +48,7 @@ class Secret extends ModelBase
     }
 
     /**
-     * @returns string
+     * @return string
      */
     public function getSovereignty()
     {

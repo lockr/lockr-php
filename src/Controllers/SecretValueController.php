@@ -22,7 +22,7 @@ class SecretValueController
     /**
      * @param array $params
      *
-     * @returns SecretValue
+     * @return SecretValue
      */
     public function create(array $params)
     {

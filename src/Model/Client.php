@@ -6,7 +6,7 @@ use DateTime;
 class Client extends ModelBase
 {
     /**
-     * @returns DateTime
+     * @return DateTime
      */
     public function getCreated()
     {
@@ -15,7 +15,7 @@ class Client extends ModelBase
     }
 
     /**
-     * @returns string
+     * @return string
      */
     public function getEnv()
     {

@@ -22,7 +22,7 @@ class SiteController
     /**
      * @param array $params
      *
-     * @returns Site
+     * @return Site
      */
     public function create(array $params)
     {

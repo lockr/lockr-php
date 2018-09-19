@@ -22,7 +22,7 @@ class ClientController
     /**
      * @param array $params
      *
-     * @returns Client
+     * @return Client
      */
     public function createFromCsr(array $params)
     {

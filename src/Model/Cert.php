@@ -6,7 +6,7 @@ use DateTime;
 class Cert extends ModelBase
 {
     /**
-     * @returns DateTime
+     * @return DateTime
      */
     public function getCreated()
     {
@@ -15,7 +15,7 @@ class Cert extends ModelBase
     }
 
     /**
-     * @returns string
+     * @return string
      */
     public function getCsrText()
     {
@@ -23,7 +23,7 @@ class Cert extends ModelBase
     }
 
     /**
-     * @returns string
+     * @return string
      */
     public function getCertText()
     {
@@ -31,7 +31,7 @@ class Cert extends ModelBase
     }
 
     /**
-     * @returns DateTime
+     * @return DateTime
      */
     public function getExpiration()
     {

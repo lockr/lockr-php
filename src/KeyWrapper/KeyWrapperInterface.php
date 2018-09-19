@@ -4,7 +4,7 @@ namespace Lockr\KeyWrapper;
 interface KeyWrapperInterface
 {
     /**
-     * @returns bool
+     * @return bool
      */
     public static function enabled();
 
@@ -13,7 +13,7 @@ interface KeyWrapperInterface
      *
      * @param string $plaintext
      *
-     * @returns array
+     * @return array
      */
     public static function encrypt($plaintext);
 
@@ -23,7 +23,7 @@ interface KeyWrapperInterface
      * @param string $plaintext
      * @param string $wrapping_key
      *
-     * @returns array
+     * @return array
      */
     public static function reencrypt($plaintext, $wrapping_key);
 
@@ -33,7 +33,7 @@ interface KeyWrapperInterface
      * @param string $ciphertext
      * @param string $wrapping_key
      *
-     * @returns string|bool
+     * @return string|bool
      */
     public static function decrypt($ciphertext, $wrapping_key);
 }

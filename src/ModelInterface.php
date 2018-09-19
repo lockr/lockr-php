@@ -6,7 +6,7 @@ interface ModelInterface
     /**
      * Gets the ID of this model.
      *
-     * @returns string
+     * @return string
      */
     public function getId();
 
@@ -15,7 +15,7 @@ interface ModelInterface
      *
      * @param string $name
      *
-     * @returns mixed
+     * @return mixed
      */
     public function getAttribute($name);
 
@@ -24,7 +24,7 @@ interface ModelInterface
      *
      * @param string $name
      *
-     * @returns array
+     * @return array
      */
     public function getRelationship($name);
 }

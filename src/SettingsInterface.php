@@ -6,14 +6,14 @@ interface SettingsInterface
     /**
      * Gets the Lockr host to connect to.
      *
-     * @returns string
+     * @return string
      */
     public function getHostname();
 
     /**
      * Gets the Guzzle client options to apply.
      *
-     * @returns array
+     * @return array
      */
     public function getOptions();
 }

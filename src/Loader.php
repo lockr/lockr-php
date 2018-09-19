@@ -115,7 +115,7 @@ class Loader implements LoaderInterface
      *
      * @param string $type
      *
-     * @returns ModelInterface[]
+     * @return ModelInterface[]
      */
     public function loadCollection($type)
     {
@@ -151,7 +151,7 @@ class Loader implements LoaderInterface
      *
      * @param array $body
      *
-     * @returns ModelInterface
+     * @return ModelInterface
      */
     private function loadBody(array $body)
     {
@@ -167,7 +167,7 @@ class Loader implements LoaderInterface
     /**
      * @param array $data
      *
-     * @returns ModelInterface
+     * @return ModelInterface
      */
     private function loadModel(array $data)
     {

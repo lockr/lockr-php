@@ -8,7 +8,7 @@ interface SecretInfoInterface
      *
      * @param string $name
      *
-     * @returns array
+     * @return array
      */
     public function getSecretInfo($name);
 

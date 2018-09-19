@@ -6,7 +6,7 @@ use DateTime;
 class Site extends ModelBase
 {
     /**
-     * @returns DateTime
+     * @return DateTime
      */
     public function getCreated()
     {
@@ -15,7 +15,7 @@ class Site extends ModelBase
     }
 
     /**
-     * @returns DateTime
+     * @return DateTime
      */
     public function getModified()
     {
@@ -24,7 +24,7 @@ class Site extends ModelBase
     }
 
     /**
-     * @returns string
+     * @return string
      */
     public function getLabel()
     {

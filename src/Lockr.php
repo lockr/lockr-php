@@ -23,7 +23,7 @@ class Lockr
     }
 
     /**
-     * @returns Controllers\ClientController
+     * @return Controllers\ClientController
      */
     public function clients()
     {
@@ -31,7 +31,7 @@ class Lockr
     }
 
     /**
-     * @returns Controllers\ClientTokenController
+     * @return Controllers\ClientTokenController
      */
     public function clientTokens()
     {
@@ -39,7 +39,7 @@ class Lockr
     }
 
     /**
-     * @returns Controllers\SecretController
+     * @return Controllers\SecretController
      */
     public function secrets()
     {
@@ -47,7 +47,7 @@ class Lockr
     }
 
     /**
-     * @returns Controllers\SecretValueController
+     * @return Controllers\SecretValueController
      */
     public function secretValues()
     {
@@ -55,7 +55,7 @@ class Lockr
     }
 
     /**
-     * @returns Controllers\SiteController
+     * @return Controllers\SiteController
      */
     public function sites()
     {

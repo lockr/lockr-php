@@ -8,7 +8,7 @@ interface LoaderInterface
      *
      * @param array $data
      *
-     * @returns ModelInterface
+     * @return ModelInterface
      */
     public function create(array $data);
 
@@ -19,7 +19,7 @@ interface LoaderInterface
      * @param string $id
      * @param array $include
      *
-     * @returns ModelInterface
+     * @return ModelInterface
      */
     public function load($type, $id, array $include = null);
 
@@ -28,7 +28,7 @@ interface LoaderInterface
      *
      * @param string $type
      *
-     * @returns ModelInterface[]
+     * @return ModelInterface[]
      */
     public function loadCollection($type);
 
@@ -38,7 +38,7 @@ interface LoaderInterface
      * @param ModelInterface $model
      * @param string $name
      *
-     * @returns ModelInterface
+     * @return ModelInterface
      */
     public function loadRelated(ModelInterface $model, $name);
 }

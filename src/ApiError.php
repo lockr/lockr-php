@@ -59,7 +59,7 @@ class ApiError
     }
 
     /**
-     * @returns string
+     * @return string
      */
     public function getId()
     {
@@ -67,7 +67,7 @@ class ApiError
     }
 
     /**
-     * @returns array
+     * @return array
      */
     public function getLinks()
     {
@@ -75,7 +75,7 @@ class ApiError
     }
 
     /**
-     * @returns string
+     * @return string
      */
     public function getCode()
     {
@@ -83,7 +83,7 @@ class ApiError
     }
 
     /**
-     * @returns string
+     * @return string
      */
     public function getTitle()
     {
@@ -91,7 +91,7 @@ class ApiError
     }
 
     /**
-     * @returns string
+     * @return string
      */
     public function getDetail()
     {
@@ -99,7 +99,7 @@ class ApiError
     }
 
     /**
-     * @returns array
+     * @return array
      */
     public function getSource()
     {
@@ -107,7 +107,7 @@ class ApiError
     }
 
     /**
-     * @returns array
+     * @return array
      */
     public function getMeta()
     {
