@@ -24,9 +24,9 @@ class LockrAes128CtrSha256RawKeyWrapper implements KeyWrapperInterface
      */
     public static function encrypt($plaintext)
     {
-        $key = openssl_random_pseudo_bytes(self::KEY_LEN);
-        $iv = openssl_random_pseudo_bytes(self::IV_LEN);
-        $hmac_key = openssl_random_pseudo_bytes(self::HMAC_KEY_LEN);
+        $key = random_bytes(self::KEY_LEN);
+        $iv = random_bytes(self::IV_LEN);
+        $hmac_key = random_bytes(self::HMAC_KEY_LEN);
         return self::doEncrypt($plaintext, $key, $iv, $hmac_key);
     }
 
@@ -39,7 +39,7 @@ class LockrAes128CtrSha256RawKeyWrapper implements KeyWrapperInterface
         $wrapping_key = base64_decode($wrapping_key);
         $key = substr($wrapping_key, 0, self::KEY_LEN);
         $hmac_key = substr($wrapping_key, self::KEY_LEN);
-        $iv = openssl_random_pseudo_bytes(self::IV_LEN);
+        $iv = random_bytes(self::IV_LEN);
         return self::doEncrypt($plaintext, $key, $iv, $hmac_key);
     }
 
