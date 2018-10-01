@@ -9,10 +9,13 @@ use Psr\Http\Message\ResponseInterface;
 
 use Lockr\Exception\LockrClientException;
 use Lockr\Exception\LockrServerException;
+use Lockr\Guzzle\MiddlewareFactory;
 use Lockr\Model;
 
 class Loader implements LoaderInterface
 {
+    const VERSION = 'dev';
+
     /** @var GuzzleHttp\ClientInterface $httpClient */
     private $httpClient;
 
@@ -56,7 +59,7 @@ class Loader implements LoaderInterface
         $handler = GuzzleHttp\HandlerStack::create();
         $handler->push(MiddlewareFactory::retry());
         $base_options = [
-            'base_uri' => 'https://{$settings->getHostname()}',
+            'base_uri' => "https://{$settings->getHostname()}",
             'handler' => $handler,
             'connect_timeout' => 2.0,
             'expect' => false,
@@ -111,6 +114,23 @@ class Loader implements LoaderInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function update(array $data)
+    {
+        $uri = "/{$this->routeMap[$data['type']]}/{$data['id']}";
+        $headers = [
+            'content-type' => ['application/api+json'],
+        ];
+        $body = json_encode(['data' => $data]);
+        $req = new Psr7\Request('PATCH', $uri, $headers, $body);
+        $resp = $this->httpClient->send($req);
+        $this->checkErrors($resp);
+        $body = json_decode((string) $resp->getBody(), true);
+        return $this->loadBody($body);
+    }
+
+    /**
      * Loads a collection.
      *
      * @param string $type
@@ -140,6 +160,19 @@ class Loader implements LoaderInterface
         $links = $rel['links'];
         $uri = $links['related'];
         $req = new Psr7\Request('GET', $uri);
+        $resp = $this->httpClient->send($req);
+        $this->checkErrors($resp);
+        $body = json_decode((string) $resp->getBody(), true);
+        return $this->loadBody($body);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function loadRelationship(ModelInterface $model, $name)
+    {
+        $rel = $model->getRelationship($name);
+        $req = new Psr7\Request('GET', $rel['links']['self']);
         $resp = $this->httpClient->send($req);
         $this->checkErrors($resp);
         $body = json_decode((string) $resp->getBody(), true);
