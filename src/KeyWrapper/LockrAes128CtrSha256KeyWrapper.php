@@ -56,7 +56,7 @@ class LockrAes128CtrSha256KeyWrapper implements KeyWrapperInterface
         $hmac = base64_decode(substr($ciphertext, 0, self::HASH_BYTES));
         $ciphertext = base64_decode(substr($ciphertext, self::HASH_BYTES));
 
-        if (!self::hashEquals($hmac, self::hmac($ciphertext, $hmac_key))) {
+        if (!hash_equals($hmac, self::hmac($ciphertext, $hmac_key))) {
             return false;
         }
 
@@ -94,28 +94,6 @@ class LockrAes128CtrSha256KeyWrapper implements KeyWrapperInterface
     private static function hmac($data, $key)
     {
         return hash_hmac('sha256', $data, $key, true);
-    }
-
-    private static function hashEquals($left, $right)
-    {
-        if (function_exists('hash_equals')) {
-            return hash_equals($left, $right);
-        }
-
-        $ret = 0;
-
-        if (strlen($left) !== strlen($right)) {
-            $right = $left;
-            $ret = 1;
-        }
-
-        $res = $left ^ $right;
-
-        for ($i = strlen($res) - 1; $i >= 0; --$i) {
-            $ret |= ord($res[$i]);
-        }
-
-        return !$ret;
     }
 
     private static function encode($key, $iv, $hmac_key)

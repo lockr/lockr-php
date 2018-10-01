@@ -1,15 +1,13 @@
 <?php
 namespace Lockr\KeyWrapper;
 
-class LockrAes128CtrSha256RawKeyWrapper implements KeyWrapperInterface
+class LockrAes256CbcSha256KeyWrapper implements KeyWrapperInterface
 {
     const PREFIX = '$1$';
-
-    const METHOD = 'aes-128-ctr';
-
-    const HMAC_KEY_LEN = 32;
-    const KEY_LEN = 16;
+    const METHOD = 'aes-256-cbc';
+    const KEY_LEN = 32;
     const IV_LEN = 16;
+    const HMAC_KEY_LEN = 32;
 
     /**
      * {@inheritdoc}
@@ -53,14 +51,16 @@ class LockrAes128CtrSha256RawKeyWrapper implements KeyWrapperInterface
         $key = substr($wrapping_key, 0, self::KEY_LEN);
         $hmac_key = substr($wrapping_key, self::KEY_LEN);
 
-        $cipherdata = substr($ciphertext, 0, -self::HMAC_KEY_LEN);
-        $hmac = substr($ciphertext, -self::HMAC_KEY_LEN);
-        if (!self::hashEquals($hmac, self::hmac($cipherdata, $hmac_key))) {
+        $iv = substr($ciphertext, 0, self::IV_LEN);
+        $hmac0 = substr($ciphertext, -self::HMAC_KEY_LEN);
+        $ciphertext = substr($ciphertext, self::IV_LEN, -self::HMAC_KEY_LEN);
+
+        $aad = self::PREFIX . self::METHOD . $iv;
+        $hmac1 = self::hmac($aad . $ciphertext, $hmac_key);
+        if (!hash_equals($hmac0, $hmac1)) {
             return false;
         }
 
-        $iv = substr($cipherdata, 0, self::IV_LEN);
-        $ciphertext = substr($cipherdata, self::IV_LEN);
         $plaintext = openssl_decrypt(
             $ciphertext,
             self::METHOD,
@@ -74,7 +74,7 @@ class LockrAes128CtrSha256RawKeyWrapper implements KeyWrapperInterface
         return $plaintext;
     }
 
-    private static function doEncrypt($plaintext, $key, $iv, $hmac_key)
+    protected static function doEncrypt($plaintext, $key, $iv, $hmac_key)
     {
         $ciphertext = openssl_encrypt(
             $plaintext,
@@ -83,39 +83,17 @@ class LockrAes128CtrSha256RawKeyWrapper implements KeyWrapperInterface
             OPENSSL_RAW_DATA,
             $iv
         );
-        $cipherdata = $iv . $ciphertext;
-        $hmac = self::hmac($cipherdata, $hmac_key);
+        $aad = self::PREFIX . self::METHOD . $iv;
+        $hmac = self::hmac($aad . $ciphertext, $hmac_key);
         return [
-            'ciphertext' => $cipherdata . $hmac,
+            'ciphertext' => $iv . $ciphertext . $hmac,
             'encoded' => self::PREFIX . base64_encode($key . $hmac_key),
         ];
     }
 
-    private static function hmac($data, $key)
+    protected static function hmac($data, $key)
     {
-        return hash_hmac('sha256', self::METHOD . $data, $key, true);
-    }
-
-    private static function hashEquals($left, $right)
-    {
-        if (function_exists('hash_equals')) {
-            return hash_equals($left, $right);
-        }
-
-        $ret = 0;
-
-        if (strlen($left) !== strlen($right)) {
-            $right = $left;
-            $ret = 1;
-        }
-
-        $res = $left ^ $right;
-
-        for ($i = strlen($res) - 1; $i >= 0; --$i) {
-            $ret |= ord($res[$i]);
-        }
-
-        return !$ret;
+        return hash_hmac('sha256', $data, $key, true);
     }
 }
 

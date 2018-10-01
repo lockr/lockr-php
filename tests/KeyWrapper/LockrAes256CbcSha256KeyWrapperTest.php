@@ -3,9 +3,9 @@ namespace Lockr\Tests\KeyWrapper;
 
 use PHPUnit\Framework\TestCase;
 
-use Lockr\KeyWrapper\LockrAes128CtrSha256RawKeyWrapper as KeyWrapper;
+use Lockr\KeyWrapper\LockrAes256CbcSha256KeyWrapper as KeyWrapper;
 
-class LockrAes128CtrSha256RawKeyWrapperTest extends TestCase
+class LockrAes256CbcSha256KeyWrapperTest extends TestCase
 {
     public function testEncryptsData()
     {
