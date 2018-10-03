@@ -11,6 +11,8 @@ class LockrApiException extends Exception
     public function __construct(array $errors = [])
     {
         $this->errors = $errors;
+        $msg = $this->buildMessage();
+        parent::__construct($msg);
     }
 
     /**
@@ -21,7 +23,7 @@ class LockrApiException extends Exception
         return $this->errors;
     }
 
-    public function getMessage()
+    public function buildMessage()
     {
         $msgs = [];
         foreach ($this->errors as $err) {
