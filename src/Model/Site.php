@@ -11,7 +11,7 @@ class Site extends ModelBase
     public function getCreated()
     {
         $created = $this->getAttribute('created');
-        return DateTime::createFromFormat(DateTime::RFC3339, $created);
+        return DateTime::createFromFormat('Y-m-d\TH:i:s.uP', $created);
     }
 
     /**
@@ -20,7 +20,7 @@ class Site extends ModelBase
     public function getModified()
     {
         $modified = $this->getAttribute('modified');
-        return DateTime::createFromFormat(DateTime::RFC3339, $modified);
+        return DateTime::createFromFormat('Y-m-d\TH:i:s.uP', $modified);
     }
 
     /**
