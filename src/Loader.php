@@ -180,6 +180,14 @@ class Loader implements LoaderInterface
     }
 
     /**
+     * @return GuzzleHttp\Client
+     */
+    public function getHttpClient()
+    {
+        return $this->httpClient;
+    }
+
+    /**
      * Loads the primary data model, and caches included models.
      *
      * @param array $body

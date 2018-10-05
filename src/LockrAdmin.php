@@ -1,6 +1,10 @@
 <?php
 namespace Lockr;
 
+use DateTime;
+
+use GuzzleHttp\Psr7;
+
 class LockrAdmin
 {
     /** @var LoaderInterface $loader */
@@ -87,6 +91,32 @@ class LockrAdmin
                 ],
             ],
         ]);
+    }
+
+    /**
+     * @param string[] $site_ids
+     * @param DateTime $since
+     * @param DateTime $until
+     *
+     * @return array
+     */
+    public function getUsage(
+        array $site_ids,
+        DateTime $since,
+        DateTime $until = null
+    ) {
+        $query = 'site_id=' . urlencode(implode(',', $site_ids));
+        $query .= '&since=' . urlencode($since->format('Y-m-01'));
+        if ($until !== null) {
+            $query .= '&until=' . urlencode($since->format('Y-m-01'));
+        }
+        $req = new Psr7\Request(
+            'GET',
+            "/usage?{$query}",
+            ['accept' => ['application/json']]
+        );
+        $resp = $this->loader->getHttpClient()->send($req);
+        return json_decode((string) $resp->getBody(), true);
     }
 }
 
