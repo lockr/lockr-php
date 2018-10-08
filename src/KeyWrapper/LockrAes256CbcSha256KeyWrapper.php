@@ -55,8 +55,7 @@ class LockrAes256CbcSha256KeyWrapper implements KeyWrapperInterface
         $hmac0 = substr($ciphertext, -self::HMAC_KEY_LEN);
         $ciphertext = substr($ciphertext, self::IV_LEN, -self::HMAC_KEY_LEN);
 
-        $aad = self::PREFIX . self::METHOD . $iv;
-        $hmac1 = self::hmac($aad . $ciphertext, $hmac_key);
+        $hmac1 = self::hmac($iv, $ciphertext, $hmac_key);
         if (!hash_equals($hmac0, $hmac1)) {
             return false;
         }
@@ -83,16 +82,16 @@ class LockrAes256CbcSha256KeyWrapper implements KeyWrapperInterface
             OPENSSL_RAW_DATA,
             $iv
         );
-        $aad = self::PREFIX . self::METHOD . $iv;
-        $hmac = self::hmac($aad . $ciphertext, $hmac_key);
+        $hmac = self::hmac($iv, $ciphertext, $hmac_key);
         return [
             'ciphertext' => $iv . $ciphertext . $hmac,
             'encoded' => self::PREFIX . base64_encode($key . $hmac_key),
         ];
     }
 
-    protected static function hmac($data, $key)
+    protected static function hmac($iv, $ciphertext, $key)
     {
+        $data = self::PREFIX . self::METHOD . $iv . $ciphertext;
         return hash_hmac('sha256', $data, $key, true);
     }
 }
