@@ -134,17 +134,27 @@ class Loader implements LoaderInterface
      * Loads a collection.
      *
      * @param string $type
+     * @param string[]|null $params
      *
      * @return ModelInterface[]
      */
-    public function loadCollection($type)
+    public function loadCollection($type, array $params = null)
     {
-        $uri = "/{$this->routeMap[$type]}";
+        $uri = new Psr7\Uri("/{$this->routeMap[$type]}");
+        if ($params) {
+            foreach ($params as $key => $value) {
+                $uri = Psr7\Uri::withQueryValue($uri, $key, $value);
+            }
+        }
         $req = new Psr7\Request('GET', $uri);
         $resp = $this->httpClient->send($req);
         $this->checkErrors($resp);
         $body = json_decode((string) $resp->getBody(), true);
-        return array_map([$this, 'loadModel'], $body['data']);
+        $models = [];
+        foreach ($body['data'] as $data) {
+            $models[] = $this->loadModel($data, false);
+        }
+        return $models;
     }
 
     /**
@@ -207,15 +217,18 @@ class Loader implements LoaderInterface
 
     /**
      * @param array $data
+     * @param bool $cache
      *
      * @return ModelInterface
      */
-    private function loadModel(array $data)
+    private function loadModel(array $data, $cache = true)
     {
         $type = $data['type'];
         $cls = $this->modelMap[$type];
         $model = new $cls($data);
-        $this->cache["{$type}:{$data['id']}"] = $model;
+        if ($cache) {
+            $this->cache["{$type}:{$data['id']}"] = $model;
+        }
         return $model;
     }
 
