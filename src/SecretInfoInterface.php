@@ -19,6 +19,13 @@ interface SecretInfoInterface
      * @param array $info
      */
     public function setSecretInfo($name, array $info);
+
+    /**
+     * Returns all secret info.
+     *
+     * @return array
+     */
+    public function getAllSecretInfo();
 }
 
 // ex: ts=4 sts=4 sw=4 et:
