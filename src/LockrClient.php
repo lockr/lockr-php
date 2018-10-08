@@ -72,7 +72,7 @@ class LockrClient
             ],
         ]);
         $rel = $client->getRelationship('certs');
-        $data = $rel[0]['data'];
+        $data = $rel['data'][0];
         $cert = $this->loader->load($data['type'], $data['id']);
         return [
             'key_text' => $key_text,
