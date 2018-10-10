@@ -30,6 +30,14 @@ class Site extends ModelBase
     {
         return $this->getAttribute('label');
     }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->getAttribute('status');
+    }
 }
 
 // ex: ts=4 sts=4 sw=4 et:
