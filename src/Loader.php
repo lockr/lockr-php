@@ -152,7 +152,7 @@ class Loader implements LoaderInterface
         $body = json_decode((string) $resp->getBody(), true);
         $models = [];
         foreach ($body['data'] as $data) {
-            $models[] = $this->loadModel($data, false);
+            $models[] = $this->loadModel($data);
         }
         return $models;
     }

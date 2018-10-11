@@ -174,14 +174,20 @@ class LockrClient
         if (!$secret_value_id) {
             $svals = $this->loader->loadCollection(
                 'secret-value',
-                ['secret_name' => $name]
+                [
+                    'filter[secret.name]' => $name,
+                    'page[limit]' => 1,
+                ]
             );
             if (!$svals) {
                 return null;
             }
-            $secret_value_id = $svals[0]->getId();
+            $sval = $svals[0];
+            $secret_value_id = $sval->getId();
         }
-        $sval = $this->loader->load('secret-value', $secret_value_id);
+        else {
+            $sval = $this->loader->load('secret-value', $secret_value_id);
+        }
         $value = $sval->getValue();
         $info = $this->info->getSecretInfo($name);
         if (isset($info['wrapping_key'])) {
