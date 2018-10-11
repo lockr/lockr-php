@@ -81,13 +81,23 @@ class LockrClient
     }
 
     /**
+     * Gets this client.
+     *
+     * @return Model\Client
+     */
+    public function getClient()
+    {
+        return $this->loader->load('client', '_self', ['site']);
+    }
+
+    /**
      * Gets the site associated with this client.
      *
      * @return Model\Site
      */
     public function getSite()
     {
-        $client = $this->loader->load('client', '_self', ['site']);
+        $client = $this->getClient();
         return $this->loader->loadRelated($client, 'site');
     }
 
