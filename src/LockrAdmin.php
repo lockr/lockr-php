@@ -94,25 +94,31 @@ class LockrAdmin
     }
 
     /**
-     * @param string[] $site_ids
      * @param DateTime $since
      * @param DateTime $until
+     * @param string[] $site_ids
      *
      * @return array
      */
     public function getUsage(
-        array $site_ids,
         DateTime $since,
         DateTime $until = null
+        array $site_ids = null,
     ) {
-        $query = 'site_id=' . urlencode(implode(',', $site_ids));
-        $query .= '&since=' . urlencode($since->format('Y-m-01'));
-        if ($until !== null) {
-            $query .= '&until=' . urlencode($since->format('Y-m-01'));
+        $uri = new Psr7\Uri('/usage');
+        $value = $since->format('Y-m-d\TH:i:s\Z');
+        $uri = Psr7\Uri::withQueryValue($uri, 'since', $value);
+        if ($until) {
+            $value = $until->format('Y-m-d\TH:i:s\Z');
+            $uri = Psr7\Uri::withQueryValue($uri, 'until', $value);
+        }
+        if ($site_ids) {
+            $value = implode(',', $site_ids);
+            $uri = Psr7\Uri::withQueryValue($uri, 'site_id', $value);
         }
         $req = new Psr7\Request(
             'GET',
-            "/usage?{$query}",
+            $uri,
             ['accept' => ['application/json']]
         );
         $resp = $this->loader->getHttpClient()->send($req);
