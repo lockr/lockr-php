@@ -123,25 +123,14 @@ class LockrClient
                 }
             }
             if (!$secret) {
-                $site = $this->getSite();
-                $secret = $this->loader->create(
-                    [
-                        'type' => 'secret',
-                        'attributes' => [
-                            'name' => $name,
-                            'label' => $label ?: $name,
-                            'policy' => 'standard',
-                        ],
-                        'relationships' => [
-                            'site' => [
-                                'data' => [
-                                    'type' => 'site',
-                                    'id' => $site->getId(),
-                                ],
-                            ],
-                        ],
-                    ]
-                );
+                $secret = $this->loader->create([
+                    'type' => 'secret',
+                    'attributes' => [
+                        'name' => $name,
+                        'label' => $label ?: $name,
+                        'policy' => 'standard',
+                    ],
+                ]);
             }
             $info['secret_id'] = $secret->getId();
         }
