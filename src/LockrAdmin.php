@@ -102,8 +102,8 @@ class LockrAdmin
      */
     public function getUsage(
         DateTime $since,
-        DateTime $until = null
-        array $site_ids = null,
+        DateTime $until = null,
+        array $site_ids = null
     ) {
         $uri = new Psr7\Uri('/usage');
         $value = $since->format('Y-m-d\TH:i:s\Z');
