@@ -15,6 +15,7 @@
         "indigophp/hash-compat": "^1.1.0",
         "paragonie/random_compat": ">=2",
         "psr/http-message": "^1.0.1",
+        "psr/log": "^1.0.2",
         "symfony/yaml": "~3.4.5"
     },
     "autoload": {

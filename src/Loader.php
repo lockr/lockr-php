@@ -6,14 +6,18 @@ use Exception;
 use GuzzleHttp;
 use GuzzleHttp\Psr7;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
 use Lockr\Exception\LockrClientException;
 use Lockr\Exception\LockrServerException;
 use Lockr\Guzzle\MiddlewareFactory;
 use Lockr\Model;
 
-class Loader implements LoaderInterface
+class Loader implements LoaderInterface, LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     const VERSION = 'dev';
 
     /** @var GuzzleHttp\ClientInterface $httpClient */
@@ -240,7 +244,14 @@ class Loader implements LoaderInterface
         $status = $resp->getStatusCode();
         if ($status >= 400) {
             $errors = [];
-            if ($body = json_decode((string) $resp->getBody(), true) &&
+            $body_content = (string) $resp->getBody();
+            if ($this->logger) {
+                $this->logger->error('Lockr error: {status} {body}', [
+                    'status' => $status,
+                    'body' => $body_content,
+                ]);
+            }
+            if ($body = json_decode($body_content, true) &&
                 isset($body['errors'])
             ) {
                 foreach ($body['errors'] as $error) {
