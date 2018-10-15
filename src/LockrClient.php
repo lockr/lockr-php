@@ -102,6 +102,18 @@ class LockrClient
     }
 
     /**
+     * Gets client and site in a single call.
+     *
+     * @return array
+     */
+    public function getClientSite()
+    {
+        $client = $this->getClient();
+        $site = $this->loader->loadRelated($client, 'site');
+        return ['client' => $client, 'site' => $site];
+    }
+
+    /**
      * Creates a secret value.
      *
      * @param string $name
