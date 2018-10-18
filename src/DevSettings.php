@@ -1,7 +1,7 @@
 <?php
 namespace Lockr;
 
-class DevSettings extends AnonSettings
+class DevSettings implements SettingsInterface
 {
     /** @var string $certPath */
     private $certPath;
