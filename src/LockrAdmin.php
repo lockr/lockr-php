@@ -72,16 +72,20 @@ class LockrAdmin
     }
 
     /**
+     * @param string $label
      * @param string $site_id
      * @param string $env
      *
      * @return Model\ClientToken
      */
-    public function createClientToken($site_id, $env)
+    public function createClientToken($label, $site_id, $env)
     {
         return $this->loader->create([
             'type' => 'client-token',
-            'attributes' => ['env' => $env],
+            'attributes' => [
+                'label' => $label,
+                'env' => $env,
+            ],
             'relationships' => [
                 'site' => [
                     'data' => [
