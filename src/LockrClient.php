@@ -3,6 +3,7 @@ namespace Lockr;
 
 use RuntimeException;
 
+use Guzzle\Psr7;
 use Symfony\Component\Yaml\Yaml;
 
 use Lockr\KeyWrapper\MultiKeyWrapper;
@@ -15,15 +16,20 @@ class LockrClient
     /** @var SecretInfoInterface $info */
     private $info;
 
+    /** @var string $accountsHost */
+    private $accountsHost;
+
     /**
      * @param LoaderInterface $loader
      */
     public function __construct(
         LoaderInterface $loader,
-        SecretInfoInterface $secret_info
+        SecretInfoInterface $secret_info,
+        $accounts_host = 'accounts.lockr.io'
     ) {
         $this->loader = $loader;
         $this->info = $secret_info;
+        $this->accountsHost = $accounts_host;
     }
 
     public function createClient($client_token_id)
@@ -233,6 +239,39 @@ class LockrClient
         foreach ($data as $name => $info) {
             $this->info->setSecretInfo($name, $info);
         }
+    }
+
+    /**
+     * Allows programmatic registration of new sites.
+     *
+     * @param string $email
+     * @param string $password
+     * @param string $site_label
+     * @param string $client_label
+     */
+    public function createSite($email, $password, $site_label, $client_label)
+    {
+        $uri = (new Psr7\Uri())
+            ->withScheme('https')
+            ->withHost($this->accountsHost)
+            ->withPath('/lockr-api/register');
+        $data = [
+            'email' => $email,
+            'password' => $password,
+            'site_label' => $site_label,
+            'client_label' => $client_label,
+        ];
+        $req = new Psr7\Request(
+            'POST',
+            $uri,
+            [
+                'content-type' => ['application/json'],
+                'accept' => ['application/json'],
+            ],
+            json_encode($data)
+        );
+        $resp = $this->loader->getHttpClient()->send($req);
+        return json_decode((string) $resp->getBody(), true);
     }
 }
 
