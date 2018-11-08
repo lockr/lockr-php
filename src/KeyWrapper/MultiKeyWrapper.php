@@ -25,11 +25,11 @@ class MultiKeyWrapper implements KeyWrapperInterface
     /**
      * {@inheritdoc}
      */
-    public static function encrypt($plaintext)
+    public static function encrypt($plaintext, $key = null)
     {
         foreach (self::$wrappers as $wrapper) {
             if ($wrapper::enabled()) {
-                return $wrapper::encrypt($plaintext);
+                return $wrapper::encrypt($plaintext, $key);
             }
         }
         return false;

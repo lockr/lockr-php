@@ -20,9 +20,11 @@ class LockrAes256CbcSha256KeyWrapper implements KeyWrapperInterface
     /**
      * {@inheritdoc}
      */
-    public static function encrypt($plaintext)
+    public static function encrypt($plaintext, $key = null)
     {
-        $key = random_bytes(self::KEY_LEN);
+        if (is_null($key)) {
+            $key = random_bytes(self::KEY_LEN);
+        }
         $iv = random_bytes(self::IV_LEN);
         $hmac_key = random_bytes(self::HMAC_KEY_LEN);
         return self::doEncrypt($plaintext, $key, $iv, $hmac_key);

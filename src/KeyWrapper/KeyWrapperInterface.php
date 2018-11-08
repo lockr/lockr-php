@@ -12,10 +12,11 @@ interface KeyWrapperInterface
      * Encrypt the given plaintext.
      *
      * @param string $plaintext
+     * @param string|null $key
      *
      * @return array
      */
-    public static function encrypt($plaintext);
+    public static function encrypt($plaintext, $key = null);
 
     /**
      * Encrypt the given plaintext reusing state.

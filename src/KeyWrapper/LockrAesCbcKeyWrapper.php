@@ -18,9 +18,11 @@ class LockrAesCbcKeyWrapper implements KeyWrapperInterface
     /**
      * {@inheritdoc}
      */
-    public static function encrypt($plaintext)
+    public static function encrypt($plaintext, $key = null)
     {
-        $key = openssl_random_pseudo_bytes(32);
+        if (is_null($key)) {
+            $key = openssl_random_pseudo_bytes(32);
+        }
         $iv_len = mcrypt_get_iv_size(self::CIPHER, self::MODE);
         $iv = mcrypt_create_iv($iv_len);
 
