@@ -26,8 +26,7 @@ class LockrAes256CbcSha256KeyWrapper implements KeyWrapperInterface
             $key = random_bytes(self::KEY_LEN);
         }
         $iv = random_bytes(self::IV_LEN);
-        $hmac_key = random_bytes(self::HMAC_KEY_LEN);
-        return self::doEncrypt($plaintext, $key, $iv, $hmac_key);
+        return self::doEncrypt($plaintext, $key, $iv);
     }
 
     /**
@@ -37,10 +36,8 @@ class LockrAes256CbcSha256KeyWrapper implements KeyWrapperInterface
     {
         $wrapping_key = substr($wrapping_key, strlen(self::PREFIX));
         $wrapping_key = base64_decode($wrapping_key);
-        $key = substr($wrapping_key, 0, self::KEY_LEN);
-        $hmac_key = substr($wrapping_key, self::KEY_LEN);
         $iv = random_bytes(self::IV_LEN);
-        return self::doEncrypt($plaintext, $key, $iv, $hmac_key);
+        return self::doEncrypt($plaintext, $wrapping_key, $iv);
     }
 
     /**
@@ -50,8 +47,9 @@ class LockrAes256CbcSha256KeyWrapper implements KeyWrapperInterface
     {
         $wrapping_key = substr($wrapping_key, strlen(self::PREFIX));
         $wrapping_key = base64_decode($wrapping_key);
-        $key = substr($wrapping_key, 0, self::KEY_LEN);
-        $hmac_key = substr($wrapping_key, self::KEY_LEN);
+        $key_data = hash('sha512', $wrapping_key, TRUE);
+        $enc_key = substr($key_data, 0, self::KEY_LEN);
+        $hmac_key = substr($key_data, self::KEY_LEN);
 
         $iv = substr($ciphertext, 0, self::IV_LEN);
         $hmac0 = substr($ciphertext, -self::HMAC_KEY_LEN);
@@ -65,7 +63,7 @@ class LockrAes256CbcSha256KeyWrapper implements KeyWrapperInterface
         $plaintext = openssl_decrypt(
             $ciphertext,
             self::METHOD,
-            $key,
+            $enc_key,
             OPENSSL_RAW_DATA,
             $iv
         );
@@ -75,19 +73,22 @@ class LockrAes256CbcSha256KeyWrapper implements KeyWrapperInterface
         return $plaintext;
     }
 
-    protected static function doEncrypt($plaintext, $key, $iv, $hmac_key)
+    protected static function doEncrypt($plaintext, $key, $iv)
     {
+        $key_data = hash('sha512', $key, TRUE);
+        $enc_key = substr($key_data, 0, self::KEY_LEN);
+        $hmac_key = substr($key_data, self::KEY_LEN);
         $ciphertext = openssl_encrypt(
             $plaintext,
             self::METHOD,
-            $key,
+            $enc_key,
             OPENSSL_RAW_DATA,
             $iv
         );
         $hmac = self::hmac($iv, $ciphertext, $hmac_key);
         return [
             'ciphertext' => $iv . $ciphertext . $hmac,
-            'encoded' => self::PREFIX . base64_encode($key . $hmac_key),
+            'encoded' => self::PREFIX . base64_encode($key),
         ];
     }
 
