@@ -163,38 +163,39 @@ EOQ;
      * Gets the latest value of a secret by name.
      *
      * @param string $name
-     * @param string|null $secret_value_id
      *
-     * @return array
+     * @return string
      */
-    public function getSecretValue($name, $secret_value_id = null)
+    public function getSecretValue($name)
     {
-        if (!$secret_value_id) {
-            $svals = $this->loader->loadCollection(
-                'secret-value',
-                [
-                    'filter[secret.name]' => $name,
-                    'page[limit]' => 1,
-                ]
-            );
-            if (!$svals) {
-                return null;
+        $query = <<<EOQ
+query LatestSecretValue($name: String!) {
+    self {
+        secret(name: $name) {
+            latest {
+                value
             }
-            $sval = $svals[0];
-            $secret_value_id = $sval->getId();
-        } else {
-            $sval = $this->loader->load('secret-value', $secret_value_id);
         }
-        $value = $sval->getValue();
+    }
+}
+EOQ;
+        $data = $this->client->query([
+            'query' => $query,
+            'variables' => [
+                'name' => $name,
+            ],
+        ]);
+        if (!isset($data['self']['secret']['latest']['value'])) {
+            return null;
+        }
+        $value = $data['self']['secret']['latest']['value'];
+        $value = base64_decode($value);
         $info = $this->info->getSecretInfo($name);
         if (isset($info['wrapping_key'])) {
             $wk = $info['wrapping_key'];
             $value = MultiKeyWrapper::decrypt($value, $wk);
         }
-        return [
-            'secret_value_id' => $sval->getid(),
-            'value' => $value,
-        ];
+        return $value;
     }
 
     /**
