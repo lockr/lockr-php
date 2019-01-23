@@ -61,7 +61,7 @@ class LockrClient
         $resp = $this->httpClient->send($req);
         $resp_data = json_decode((string) $resp->getBody(), true);
         if (!empty($resp_data['errors'])) {
-            throw new LockrException($resp_data['errors']);
+            throw new LockrApiException($resp_data['errors']);
         }
         return $resp_data['data'];
     }
