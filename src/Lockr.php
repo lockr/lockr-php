@@ -49,7 +49,7 @@ class Lockr
             throw new RuntimeException('Could not export CSR.');
         }
 
-        $query = <<<EOQ
+        $query = <<<'EOQ'
 mutation CreateCertClient($input: CreateCertClient!) {
   createCertClient(input: $input) {
     auth {
@@ -77,7 +77,7 @@ EOQ;
 
     public function createPantheonClient($client_token)
     {
-        $query = <<<EOQ
+        $query = <<<'EOQ'
 mutation CreatePantheonClient($input: CreatePantheonClient!) {
   createPantheonClient(input: $input) {
     id
@@ -101,7 +101,7 @@ EOQ;
      */
     public function getClient()
     {
-        $query = <<<EOQ
+        $query = <<<'EOQ'
 {
     self {
         env
@@ -136,7 +136,7 @@ EOQ;
         }
         $info['wrapping_key'] = $ret['encoded'];
         $value = $ret['ciphertext'];
-        $query = <<<EOQ
+        $query = <<<'EOQ'
 mutation EnsureSecret($input: EnsureSecretValue!) {
   ensureSecretValue(input: $input) {
     id
@@ -168,7 +168,7 @@ EOQ;
      */
     public function getSecretValue($name)
     {
-        $query = <<<EOQ
+        $query = <<<'EOQ'
 query LatestSecretValue($name: String!) {
     self {
         secret(name: $name) {

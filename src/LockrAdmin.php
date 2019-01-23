@@ -28,7 +28,7 @@ class LockrAdmin
      */
     public function createKeyring($label, $has_cc, DateTime $trial_end)
     {
-        $query = <<<EOQ
+        $query = <<<'EOQ'
 mutation CreateKeyring($input: CreateKeyring!) {
     createKeyring(input: $input) {
         id
@@ -57,7 +57,7 @@ EOQ;
      */
     public function createClientToken($label, $keyring_id, $env)
     {
-        $query = <<<EOQ
+        $query = <<<'EOQ'
 mutation CreateClientToken($input: CreateClientToken!) {
   createClientToken(input: $input) {
     token
