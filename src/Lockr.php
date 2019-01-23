@@ -108,7 +108,7 @@ EOQ;
         label
         keyring {
             label
-            hasCC
+            hasCreditCard
             trialEnd
         }
     }
