@@ -68,7 +68,7 @@ EOQ;
             'query' => $query,
             'variables' => [
                 'input' => [
-                    'keyringId': $keyring_id,
+                    'keyringId' => $keyring_id,
                     'clientLabel' => $label,
                     'clientEnv' => $env,
                 ],
