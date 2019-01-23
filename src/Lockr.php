@@ -114,7 +114,8 @@ EOQ;
     }
 }
 EOQ;
-        return $this->client->query(['query' => $query]);
+        $data = $this->client->query(['query' => $query]);
+        return $data['self'];
     }
 
     /**
