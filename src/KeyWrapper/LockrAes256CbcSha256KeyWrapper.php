@@ -47,7 +47,7 @@ class LockrAes256CbcSha256KeyWrapper implements KeyWrapperInterface
     {
         $wrapping_key = substr($wrapping_key, strlen(self::PREFIX));
         $wrapping_key = base64_decode($wrapping_key);
-        $key_data = hash('sha512', $wrapping_key, TRUE);
+        $key_data = hash('sha512', $wrapping_key, true);
         $enc_key = substr($key_data, 0, self::KEY_LEN);
         $hmac_key = substr($key_data, self::KEY_LEN);
 
@@ -75,7 +75,7 @@ class LockrAes256CbcSha256KeyWrapper implements KeyWrapperInterface
 
     protected static function doEncrypt($plaintext, $key, $iv)
     {
-        $key_data = hash('sha512', $key, TRUE);
+        $key_data = hash('sha512', $key, true);
         $enc_key = substr($key_data, 0, self::KEY_LEN);
         $hmac_key = substr($key_data, self::KEY_LEN);
         $ciphertext = openssl_encrypt(

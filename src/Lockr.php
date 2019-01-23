@@ -131,8 +131,7 @@ EOQ;
         $info = $this->info->getSecretInfo($name);
         if (isset($info['wrapping_key'])) {
             $ret = MultiKeyWrapper::reencrypt($value, $info['wrapping_key']);
-        }
-        else {
+        } else {
             $ret = MultiKeyWrapper::encrypt($value);
         }
         $info['wrapping_key'] = $ret['encoded'];
@@ -183,8 +182,7 @@ EOQ;
             }
             $sval = $svals[0];
             $secret_value_id = $sval->getId();
-        }
-        else {
+        } else {
             $sval = $this->loader->load('secret-value', $secret_value_id);
         }
         $value = $sval->getValue();
