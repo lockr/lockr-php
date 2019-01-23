@@ -157,6 +157,7 @@ EOQ;
                 ],
             ],
         ]);
+        $this->setSecretInfo($name, $info);
         return $data['ensureSecretValue']['id'];
     }
 
