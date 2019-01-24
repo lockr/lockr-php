@@ -12,7 +12,8 @@ class LockrApiException extends Exception
     {
         $this->errors = $errors;
         $msg = $this->buildMessage();
-        parent::__construct($msg);
+        $code = $this->divineCode();
+        parent::__construct($msg, $code);
     }
 
     /**
@@ -25,11 +26,26 @@ class LockrApiException extends Exception
 
     public function buildMessage()
     {
-        $msgs = [];
-        foreach ($this->errors as $err) {
-            $msgs[] = "[{$err->getTitle()}] {$err->getDetail()}";
+        if (!$this->errors) {
+            return ''
         }
-        return implode("\n", $msgs);
+        $err = $this->errors[0];
+        $msg = $err['message'];
+        if (count($this->errors) > 1) {
+            $extra = count($this->errors) - 1;
+            $msg .= " (and {$extra} more)";
+        }
+        return $msg;
+    }
+
+    public function divineCode()
+    {
+        foreach ($this->errors as $err) {
+            if (!empty($err['extensions']['status_code'])) {
+                return (int) $err['extensions']['status_code'];
+            }
+        }
+        return 0;
     }
 }
 
