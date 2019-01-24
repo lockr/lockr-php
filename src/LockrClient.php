@@ -28,16 +28,12 @@ class LockrClient
     public static function createFromSettings(SettingsInterface $settings)
     {
         $ua = 'php/' . phpversion() . ' LockrClient/' . self::VERSION;
-        $handler = GuzzleHttp\HandlerStack::create();
-        $handler->push(MiddlewareFactory::retry());
         $base_options = [
             'base_uri' => "https://{$settings->getHostname()}",
-            'handler' => $handler,
             'connect_timeout' => 2.0,
             'expect' => false,
             'headers' => [
                 'accept' => ['application/json'],
-                'content-type' => ['application/json'],
                 'user-agent' => [$ua],
             ],
             'http_errors' => false,
@@ -56,8 +52,11 @@ class LockrClient
      */
     public function query(array $data)
     {
+        $headers = [
+            'content-type' => ['application/json'],
+        ];
         $body = json_encode($data);
-        $req = new Psr7\Request('POST', '/graphql', [], $body);
+        $req = new Psr7\Request('POST', '/graphql', $headers, $body);
         $resp = $this->httpClient->send($req);
         $resp_data = json_decode((string) $resp->getBody(), true);
         if (!empty($resp_data['errors'])) {
