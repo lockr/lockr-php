@@ -49,13 +49,13 @@ EOQ;
     }
 
     /**
-     * @param string $label
      * @param string $keyring_id
      * @param string $env
+     * @param string $label
      *
      * @return string
      */
-    public function createClientToken($label, $keyring_id, $env)
+    public function createClientToken($keyring_id, $env, $label)
     {
         $query = <<<'EOQ'
 mutation CreateClientToken($input: CreateClientToken!) {
