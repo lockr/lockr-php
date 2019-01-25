@@ -27,7 +27,7 @@ class LockrApiException extends Exception
     public function buildMessage()
     {
         if (!$this->errors) {
-            return ''
+            return '';
         }
         $err = $this->errors[0];
         $msg = $err['message'];
