@@ -100,6 +100,42 @@ EOQ;
         ]);
         return $data['createClientToken']['token'];
     }
+
+    /**
+     * Gets a summary of secret usage.
+     *
+     * @param DateTime $start
+     * @param DateTime $end
+     *
+     * @return array
+     */
+    public function getUsageSummary(DateTime $start, DateTime $end)
+    {
+        $query = <<<'EOQ'
+query Usage($from: DateTime!, $to: DateTime!) {
+    admin {
+        usageSummary(from: $from, to: $to) {
+            date
+            usage
+            version {
+                env
+                secret {
+                    id
+                }
+            }
+        }
+    }
+}
+EOQ;
+        $data = $this->client->query([
+            'query' => $query,
+            'variables' => [
+                'from' => $start->format(DateTime::RFC3339),
+                'to' => $end->format(DateTime::RFC3339),
+            ],
+        ]);
+        return $data['admin']['usageSummary'];
+    }
 }
 
 // ex: ts=4 sts=4 sw=4 et:
