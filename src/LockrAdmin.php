@@ -115,12 +115,17 @@ EOQ;
 query Usage($from: DateTime!, $to: DateTime!) {
     admin {
         usageSummary(from: $from, to: $to) {
-            date
+            month
             usage
             version {
                 env
                 secret {
                     id
+                    name
+                    label
+                    keyring {
+                        id
+                    }
                 }
             }
         }
