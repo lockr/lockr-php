@@ -99,7 +99,7 @@ EOQ;
      *
      * @return array
      */
-    public function getClient()
+    public function getInfo()
     {
         $query = <<<'EOQ'
 {
