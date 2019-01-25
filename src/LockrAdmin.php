@@ -50,6 +50,30 @@ EOQ;
 
     /**
      * @param string $keyring_id
+     * @param string $label
+     */
+    public function updateKeyringLabel($keyring_id, $label)
+    {
+        $query = <<<'EOQ'
+mutation UpdateKeyring($input: UpdateKeyringLabel!) {
+    updateKeyringLabel(input: $input) {
+        id
+    }
+}
+EOQ;
+        $this->client->query([
+            'query' => $query,
+            'variables' => [
+                'input' => [
+                    'keyringId' => $keyring_id,
+                    'label' => $label,
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * @param string $keyring_id
      * @param string $env
      * @param string $label
      *
