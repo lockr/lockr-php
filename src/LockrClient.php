@@ -14,12 +14,26 @@ class LockrClient
     /** @var GuzzleHttp\ClientInterface $httpClient */
     private $httpClient;
 
+    /** @var bool $hasCert */
+    private $hasCert = false;
+
     /**
      * @param GuzzleHttp\ClientInterface $http_client
      */
     public function __construct(GuzzleHttp\ClientInterface $http_client)
     {
         $this->httpClient = $http_client;
+        $this->hasCert = (bool) $http_client->getConfig('cert');
+    }
+
+    /**
+     * Whether the request will have a client cert attached.
+     *
+     * @return bool
+     */
+    public function hasCert()
+    {
+        return $this->hasCert;
     }
 
     /**

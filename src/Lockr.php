@@ -95,6 +95,16 @@ EOQ;
     }
 
     /**
+     * Whether the request will have a client cert attached.
+     *
+     * @return bool
+     */
+    public function hasCert()
+    {
+        return $this->client->hasCert();
+    }
+
+    /**
      * Gets client info
      *
      * @return array
