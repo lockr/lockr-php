@@ -74,6 +74,30 @@ EOQ;
 
     /**
      * @param string $keyring_id
+     * @param bool $has_cc
+     */
+    public function upateKeyringHasCreditCard($keyring_id, $has_cc)
+    {
+        $query = <<<'EOQ'
+mutation UpdateKeyring($input: UpdateKeyringHasCreditCard!) {
+    updateKeyringHasCreditCard(input: $input) {
+        id
+    }
+}
+EOQ;
+        $this->client->query([
+            'query' => $query,
+            'variables' => [
+                'input' => [
+                    'keyringId' => $keyring_id,
+                    'hasCreditCard' => $has_cc,
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * @param string $keyring_id
      * @param string $env
      * @param string $label
      *
