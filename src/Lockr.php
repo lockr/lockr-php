@@ -134,10 +134,11 @@ EOQ;
      * @param string $name
      * @param string $value
      * @param string|null $label
+     * @param string|null $sovereignty
      *
      * @return string
      */
-    public function createSecretValue($name, $value, $label = null)
+    public function createSecretValue($name, $value, $label = null, $sovereignty = null)
     {
         $info = $this->info->getSecretInfo($name);
         if (isset($info['wrapping_key'])) {
@@ -157,14 +158,18 @@ EOQ;
         if (is_null($label)) {
             $label = '';
         }
+        $input = [
+            'name' => $name,
+            'label' => $label,
+            'value' => base64_encode($value),
+        ];
+        if (!is_null($sovereignty)) {
+            $input['sovereignty'] = $sovereignty;
+        }
         $data = $this->client->query([
             'query' => $query,
             'variables' => [
-                'input' => [
-                    'name' => $name,
-                    'label' => $label,
-                    'value' => base64_encode($value),
-                ],
+                'input' => $input,
             ],
         ]);
         $this->info->setSecretInfo($name, $info);
