@@ -40,7 +40,7 @@ EOQ;
             'variables' => [
                 'input' => [
                     'label' => $label,
-                    'hasCC' => $has_cc,
+                    'hasCreditCard' => $has_cc,
                     'trialEnd' => $trial_end->format(DateTime::RFC3339),
                 ],
             ],
