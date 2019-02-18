@@ -216,6 +216,52 @@ EOQ;
     }
 
     /**
+     * Deletes versions of a key in this client's environment.
+     *
+     * @param string $name
+     */
+    public function deleteSecretValue($name)
+    {
+        $query = <<<'EOQ'
+mutation Delete($input: DeleteClientVersions!) {
+    deleteClientVersions(input: $input)
+}
+EOQ;
+        $this->client->query([
+            'query' => $query,
+            'variables' => [
+                'input' => [
+                    'secretName' => $name,
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * Generates a new random key.
+     *
+     * @param int $size
+     *
+     * @return string
+     */
+    public function generateKey($size = 256)
+    {
+        $query = <<<'EOQ'
+query RandomKey($size: KeySize) {
+    randomKey(size: $size)
+}
+EOQ;
+        if ($size !== 256 && $size !== 192 && $size !== 128) {
+            throw new \Exception("Invalid key size: {$size}");
+        }
+        $data = $this->client->query([
+            'query' => $query,
+            'variables' => ['size' => "AES{$size}"],
+        ]);
+        return $data['randomKey'];
+    }
+
+    /**
      * Exports secret data to YAML.
      *
      * @return string
