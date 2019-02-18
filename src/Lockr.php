@@ -259,7 +259,7 @@ EOQ;
             'query' => $query,
             'variables' => ['size' => "AES{$size}"],
         ]);
-        return $data['randomKey'];
+        return base64_decode($data['randomKey']);
     }
 
     /**
