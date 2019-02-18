@@ -117,6 +117,7 @@ EOQ;
         env
         label
         keyring {
+            id
             label
             hasCreditCard
             trialEnd
