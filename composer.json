@@ -1,5 +1,5 @@
 {
-    "name": "lockr/lockr-client",
+    "name": "lockr/lockr",
     "description": "Client for use with Lockr off-site key management service.",
     "type": "library",
     "authors": [
