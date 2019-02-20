@@ -13,15 +13,21 @@ class LockrClient
     /** @var GuzzleHttp\ClientInterface $httpClient */
     private $httpClient;
 
+    /** @var LockrStatsInterface $stats */
+    private $stats;
+
     /** @var bool $hasCert */
     private $hasCert = false;
 
     /**
      * @param GuzzleHttp\ClientInterface $http_client
      */
-    public function __construct(GuzzleHttp\ClientInterface $http_client)
-    {
+    public function __construct(
+        GuzzleHttp\ClientInterface $http_client,
+        LockrStatsInterface $stats = null
+    ) {
         $this->httpClient = $http_client;
+        $this->stats = $stats ?: new BlackholeStats();
         $this->hasCert = (bool) $http_client->getConfig('cert');
     }
 
@@ -33,6 +39,16 @@ class LockrClient
     public function hasCert()
     {
         return $this->hasCert;
+    }
+
+    /**
+     * Returns the stats handler.
+     *
+     * @return LockrStatsInterface
+     */
+    public function getStats()
+    {
+        return $this->stats;
     }
 
     /**
