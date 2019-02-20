@@ -60,6 +60,7 @@ mutation CreateCertClient($input: CreateCertClient!) {
   }
 }
 EOQ;
+        $t0 = microtime(true);
         $data = $this->client->query([
             'query' => $query,
             'variables' => [
@@ -69,6 +70,9 @@ EOQ;
                 ],
             ],
         ]);
+        $t1 = microtime(true);
+        $this->client->getStats()
+            ->lockrCallCompleted('create_cert_client', $t1 - t0);
         return [
             'key_text' => $key_text,
             'cert_text' => $data['createCertClient']['auth']['certText'],
@@ -84,6 +88,7 @@ mutation CreatePantheonClient($input: CreatePantheonClient!) {
   }
 }
 EOQ;
+        $t0 = microtime(true);
         $this->client->query([
             'query' => $query,
             'variables' => [
@@ -92,6 +97,9 @@ EOQ;
                 ],
             ],
         ]);
+        $t1 = microtime(true);
+        $this->client->getStats()
+            ->lockrCallCompleted('create_pantheon_client', $t1 - t0);
     }
 
     /**
@@ -125,7 +133,11 @@ EOQ;
     }
 }
 EOQ;
+        $t0 = microtime(true);
         $data = $this->client->query(['query' => $query]);
+        $t1 = microtime(true);
+        $this->client->getStats()
+            ->lockrCallCompleted('get_info', $t1 - t0);
         return $data['self'];
     }
 
@@ -167,12 +179,16 @@ EOQ;
         if (!is_null($sovereignty)) {
             $input['sovereignty'] = $sovereignty;
         }
+        $t0 = microtime(true);
         $data = $this->client->query([
             'query' => $query,
             'variables' => [
                 'input' => $input,
             ],
         ]);
+        $t1 = microtime(true);
+        $this->client->getStats()
+            ->lockrCallCompleted('create_secret_value', $t1 - t0);
         $this->info->setSecretInfo($name, $info);
         return $data['ensureSecretValue']['id'];
     }
@@ -197,12 +213,16 @@ query LatestSecretValue($name: String!) {
     }
 }
 EOQ;
+        $t0 = microtime(true);
         $data = $this->client->query([
             'query' => $query,
             'variables' => [
                 'name' => $name,
             ],
         ]);
+        $t1 = microtime(true);
+        $this->client->getStats()
+            ->lockrCallCompleted('get_secret_value', $t1 - t0);
         if (!isset($data['self']['secret']['latest']['value'])) {
             return null;
         }
@@ -228,6 +248,7 @@ mutation Delete($input: DeleteClientVersions!) {
     deleteClientVersions(input: $input)
 }
 EOQ;
+        $t0 = microtime(true);
         $this->client->query([
             'query' => $query,
             'variables' => [
@@ -236,6 +257,9 @@ EOQ;
                 ],
             ],
         ]);
+        $t1 = microtime(true);
+        $this->client->getStats()
+            ->lockrCallCompleted('delete_secret_value', $t1 - t0);
     }
 
     /**
@@ -255,10 +279,14 @@ EOQ;
         if ($size !== 256 && $size !== 192 && $size !== 128) {
             throw new \Exception("Invalid key size: {$size}");
         }
+        $t0 = microtime(true);
         $data = $this->client->query([
             'query' => $query,
             'variables' => ['size' => "AES{$size}"],
         ]);
+        $t1 = microtime(true);
+        $this->client->getStats()
+            ->lockrCallCompleted('generate_key', $t1 - t0);
         return base64_decode($data['randomKey']);
     }
 
