@@ -72,7 +72,7 @@ EOQ;
         ]);
         $t1 = microtime(true);
         $this->client->getStats()
-            ->lockrCallCompleted('create_cert_client', $t1 - t0);
+            ->lockrCallCompleted('create_cert_client', $t1 - $t0);
         return [
             'key_text' => $key_text,
             'cert_text' => $data['createCertClient']['auth']['certText'],
@@ -99,7 +99,7 @@ EOQ;
         ]);
         $t1 = microtime(true);
         $this->client->getStats()
-            ->lockrCallCompleted('create_pantheon_client', $t1 - t0);
+            ->lockrCallCompleted('create_pantheon_client', $t1 - $t0);
     }
 
     /**
@@ -137,7 +137,7 @@ EOQ;
         $data = $this->client->query(['query' => $query]);
         $t1 = microtime(true);
         $this->client->getStats()
-            ->lockrCallCompleted('get_info', $t1 - t0);
+            ->lockrCallCompleted('get_info', $t1 - $t0);
         return $data['self'];
     }
 
@@ -188,7 +188,7 @@ EOQ;
         ]);
         $t1 = microtime(true);
         $this->client->getStats()
-            ->lockrCallCompleted('create_secret_value', $t1 - t0);
+            ->lockrCallCompleted('create_secret_value', $t1 - $t0);
         $this->info->setSecretInfo($name, $info);
         return $data['ensureSecretValue']['id'];
     }
@@ -222,7 +222,7 @@ EOQ;
         ]);
         $t1 = microtime(true);
         $this->client->getStats()
-            ->lockrCallCompleted('get_secret_value', $t1 - t0);
+            ->lockrCallCompleted('get_secret_value', $t1 - $t0);
         if (!isset($data['self']['secret']['latest']['value'])) {
             return null;
         }
@@ -259,7 +259,7 @@ EOQ;
         ]);
         $t1 = microtime(true);
         $this->client->getStats()
-            ->lockrCallCompleted('delete_secret_value', $t1 - t0);
+            ->lockrCallCompleted('delete_secret_value', $t1 - $t0);
     }
 
     /**
@@ -286,7 +286,7 @@ EOQ;
         ]);
         $t1 = microtime(true);
         $this->client->getStats()
-            ->lockrCallCompleted('generate_key', $t1 - t0);
+            ->lockrCallCompleted('generate_key', $t1 - $t0);
         return base64_decode($data['randomKey']);
     }
 
