@@ -5,7 +5,6 @@ use GuzzleHttp;
 use GuzzleHttp\Psr7;
 
 use Lockr\Exception\LockrApiException;
-use Lockr\Guzzle\MiddlewareFactory;
 
 class LockrClient
 {
