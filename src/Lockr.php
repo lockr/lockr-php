@@ -315,15 +315,21 @@ EOQ;
     }
 
     /**
-     * Allows programmatic registration of new sites.
+     * Requests a dev client token for a new or existing keyring.
      *
      * @param string $email
      * @param string $password
-     * @param string $site_label
-     * @param string $client_label
+     * @param string $keyring_label
+     * @param string|null $client_label
+     * @param string|null $keyring_id
      */
-    public function createSite($email, $password, $site_label, $client_label)
-    {
+    public function requestClientToken(
+        $email,
+        $password,
+        $keyring_label,
+        $client_label = null,
+        $keyring_id = null
+    ) {
         $uri = (new Psr7\Uri())
             ->withScheme('https')
             ->withHost($this->accountsHost)
@@ -331,9 +337,14 @@ EOQ;
         $data = [
             'email' => $email,
             'password' => $password,
-            'site_label' => $site_label,
-            'client_label' => $client_label,
+            'keyring_label' => $keyring_label,
         ];
+        if (!is_null($client_label)) {
+            $data['client_label'] = $client_label;
+        }
+        if (!is_null($keyring_id)) {
+            $data['keyring_id'] = $keyring_id;
+        }
         $req = new Psr7\Request(
             'POST',
             $uri,
