@@ -130,6 +130,11 @@ EOQ;
             hasCreditCard
             trialEnd
         }
+        auth {
+            ... on LockrCert {
+                expires
+            }
+        }
     }
 }
 EOQ;
