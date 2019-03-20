@@ -81,12 +81,9 @@ class LockrClient
      */
     public function query(array $data)
     {
-        $headers = [
-            'content-type' => ['application/json'],
-        ];
-        $body = json_encode($data);
-        $req = new Psr7\Request('POST', '/graphql', $headers, $body);
-        $resp = $this->httpClient->send($req);
+        $resp = $this->httpClient->request('POST', '/graphql', [
+            'json' => $data,
+        ]);
         $resp_data = json_decode((string) $resp->getBody(), true);
         if (!empty($resp_data['errors'])) {
             throw new LockrApiException($resp_data['errors']);
