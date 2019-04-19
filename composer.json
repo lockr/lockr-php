@@ -10,7 +10,7 @@
     ],
     "license": "MIT",
     "require": {
-        "guzzlehttp/guzzle": "^6.3.3",
+        "guzzlehttp/guzzle": "^6.3.0",
         "guzzlehttp/psr7": "^1.4.2",
         "indigophp/hash-compat": "^1.1.0",
         "paragonie/random_compat": ">=2",
