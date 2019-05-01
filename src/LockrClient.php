@@ -8,7 +8,7 @@ use Lockr\Exception\LockrApiException;
 
 class LockrClient
 {
-    const VERSION = '1.0.2';
+    const VERSION = 'dev';
 
     /** @var GuzzleHttp\ClientInterface $httpClient */
     private $httpClient;
