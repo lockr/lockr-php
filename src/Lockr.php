@@ -356,6 +356,7 @@ EOQ;
                 'accept' => 'application/json',
             ],
             'json' => $data,
+            'timeout' => 30,
         ]);
         return json_decode((string) $resp->getBody(), true);
     }
