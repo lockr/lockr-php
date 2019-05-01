@@ -3,7 +3,7 @@ namespace Lockr;
 
 use RuntimeException;
 
-use Guzzle\Psr7;
+use GuzzleHttp\Psr7;
 use Symfony\Component\Yaml\Yaml;
 
 use Lockr\KeyWrapper\MultiKeyWrapper;
