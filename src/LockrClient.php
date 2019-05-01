@@ -42,6 +42,16 @@ class LockrClient
     }
 
     /**
+     * Gets the underlying HTTP client.
+     *
+     * @return GuzzleHttp\ClientInterface
+     */
+    public function getHttpClient()
+    {
+        return $this->httpClient;
+    }
+
+    /**
      * Returns the stats handler.
      *
      * @return LockrStatsInterface

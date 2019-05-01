@@ -350,16 +350,13 @@ EOQ;
         if (!is_null($keyring_id)) {
             $data['keyring_id'] = $keyring_id;
         }
-        $req = new Psr7\Request(
-            'POST',
-            $uri,
-            [
-                'content-type' => ['application/json'],
-                'accept' => ['application/json'],
+        $resp = $this->client->getHttpClient()->request('POST', $uri, [
+            'headers' => [
+                'content-type' => 'application/json',
+                'accept' => 'application/json',
             ],
-            json_encode($data)
-        );
-        $resp = $this->loader->getHttpClient()->send($req);
+            'json' => $data,
+        ]);
         return json_decode((string) $resp->getBody(), true);
     }
 }
