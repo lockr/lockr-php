@@ -52,6 +52,7 @@ class Lockr
         $query = <<<'EOQ'
 mutation CreateCertClient($input: CreateCertClient!) {
   createCertClient(input: $input) {
+    env
     auth {
       ... on LockrCert {
         certText
@@ -76,6 +77,7 @@ EOQ;
         return [
             'key_text' => $key_text,
             'cert_text' => $data['createCertClient']['auth']['certText'],
+            'env' => $data['createCertClient']['env'],
         ];
     }
 
