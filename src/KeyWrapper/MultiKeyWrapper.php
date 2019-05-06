@@ -4,6 +4,7 @@ namespace Lockr\KeyWrapper;
 class MultiKeyWrapper implements KeyWrapperInterface
 {
     private static $wrappers = [
+        LockrAes256CbcSha256RawKeyWrapper::PREFIX => LockrAes256CbcSha256RawKeyWrapper::class,
         LockrAes256CbcSha256KeyWrapper::PREFIX => LockrAes256CbcSha256KeyWrapper::class,
         LockrAes128CtrSha256KeyWrapper::PREFIX => LockrAes128CtrSha256KeyWrapper::class,
         '' => LockrAesCbcKeyWrapper::class,
