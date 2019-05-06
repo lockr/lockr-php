@@ -7,7 +7,7 @@ class LockrAes256CbcSha256KeyWrapper implements KeyWrapperInterface
     const METHOD = 'aes-256-cbc';
     const KEY_LEN = 32;
     const IV_LEN = 16;
-    const HMAC_KEY_LEN = 32;
+    const HMAC_LEN = 32;
 
     /**
      * {@inheritdoc}
@@ -51,9 +51,10 @@ class LockrAes256CbcSha256KeyWrapper implements KeyWrapperInterface
         $enc_key = substr($key_data, 0, self::KEY_LEN);
         $hmac_key = substr($key_data, self::KEY_LEN);
 
+        $ciphertext = base64_decode($ciphertext);
         $iv = substr($ciphertext, 0, self::IV_LEN);
-        $hmac0 = substr($ciphertext, -self::HMAC_KEY_LEN);
-        $ciphertext = substr($ciphertext, self::IV_LEN, -self::HMAC_KEY_LEN);
+        $hmac0 = substr($ciphertext, -self::HMAC_LEN);
+        $ciphertext = substr($ciphertext, self::IV_LEN, -self::HMAC_LEN);
 
         $hmac1 = self::hmac($iv, $ciphertext, $hmac_key);
         if (!hash_equals($hmac0, $hmac1)) {
@@ -67,9 +68,6 @@ class LockrAes256CbcSha256KeyWrapper implements KeyWrapperInterface
             OPENSSL_RAW_DATA,
             $iv
         );
-        if ($plaintext === false) {
-            return false;
-        }
         return $plaintext;
     }
 
@@ -87,7 +85,7 @@ class LockrAes256CbcSha256KeyWrapper implements KeyWrapperInterface
         );
         $hmac = self::hmac($iv, $ciphertext, $hmac_key);
         return [
-            'ciphertext' => $iv . $ciphertext . $hmac,
+            'ciphertext' => base64_encode($iv . $ciphertext . $hmac),
             'encoded' => self::PREFIX . base64_encode($key),
         ];
     }
