@@ -4,6 +4,7 @@ namespace Lockr\Tests\KeyWrapper;
 use PHPUnit\Framework\TestCase;
 
 use Lockr\KeyWrapper\LockrAes256CbcSha256KeyWrapper as KeyWrapper;
+use Lockr\KeyWrapper\LockrAes256CbcSha256RawKeyWrapper as RawKeyWrapper;
 
 class LockrAes256CbcSha256KeyWrapperTest extends TestCase
 {
@@ -22,6 +23,14 @@ class LockrAes256CbcSha256KeyWrapperTest extends TestCase
         $text = 'abcd';
         $data = KeyWrapper::reencrypt($text, $wk);
         $plaintext = KeyWrapper::decrypt($data['ciphertext'], $wk);
+        $this->assertSame($text, $plaintext);
+    }
+
+    public function testUpgradedData()
+    {
+        $text = 'abcd';
+        $data = RawKeyWrapper::encrypt($text);
+        $plaintext = KeyWrapper::decrypt($data['ciphertext'], $data['encoded']);
         $this->assertSame($text, $plaintext);
     }
 }
