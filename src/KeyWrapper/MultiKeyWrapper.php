@@ -42,7 +42,7 @@ class MultiKeyWrapper implements KeyWrapperInterface
     public static function reencrypt($plaintext, $wrapping_key)
     {
         foreach (self::$wrappers as $prefix => $wrapper) {
-            if (strpos($wrapping_key, $prefix) === 0) {
+            if (!$prefix || strpos($wrapping_key, $prefix) === 0) {
                 return $wrapper::reencrypt($plaintext, $wrapping_key);
             }
         }
@@ -55,7 +55,7 @@ class MultiKeyWrapper implements KeyWrapperInterface
     public static function decrypt($ciphertext, $wrapping_key)
     {
         foreach (self::$wrappers as $prefix => $wrapper) {
-            if (strpos($wrapping_key, $prefix) === 0) {
+            if (!$prefix || strpos($wrapping_key, $prefix) === 0) {
                 return $wrapper::decrypt($ciphertext, $wrapping_key);
             }
         }
