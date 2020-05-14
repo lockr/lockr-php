@@ -12,16 +12,21 @@ class LockrSettings implements SettingsInterface
     /** @var string $certPassword */
     private $certPassword;
 
+    /** @var array $options */
+    private $options;
+
     /**
      * @param string|null $cert_path
      * @param string|null $host
      * @param string|null $cert_password
+     * @param array $options
      */
-    public function __construct($cert_path = null, $host = null, $cert_password = null)
+    public function __construct($cert_path = null, $host = null, $cert_password = null, $options = [])
     {
         $this->certPath = $cert_path;
         $this->host = $host;
         $this->certPassword = $cert_password;
+        $this->options = $options;
     }
 
     /**
@@ -45,7 +50,7 @@ class LockrSettings implements SettingsInterface
                 $opts['cert'] = $this->certPath;
             }
         }
-        return $opts;
+        return $opts + $this->options;
     }
 }
 
