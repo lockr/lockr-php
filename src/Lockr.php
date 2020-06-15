@@ -133,6 +133,7 @@ EOQ;
             trialEnd
         }
         auth {
+            __typename
             ... on LockrCert {
                 expires
             }
