@@ -45,6 +45,6 @@ jobs:
 
             - run: vendor/bin/phpunit
 
-            - if: matrix.php == '8.1' && matrix.mode != low-deps
+            - if: matrix.php == '8.1' && matrix.mode != 'low-deps'
               name: "Lint PHP files"
               run: vendor/bin/phpcs -ps
